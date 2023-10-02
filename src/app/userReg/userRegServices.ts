@@ -2,15 +2,14 @@ import UserModel from "./UserModel";
 import { UserRegInterface } from "./userRegInterface";
 
 
-export const getRegUserServices = async (email : string): Promise<UserRegInterface | null> => {
-    const user = await UserModel.findOne({ email: email });
-    return user;
+export const getFindOneRegUserServices = async (email : string): Promise<UserRegInterface | null> => {
+    const FindUser = await UserModel.findOne({ email: email });
+    return FindUser;
 }
 
 export const postRegUserServices = async (data: UserRegInterface): Promise<UserRegInterface | []> => {
-    const user = new UserModel(data);
-    const user2 = await user.save();
-    return user2;
+    const createUser = await UserModel.create(data);
+    return createUser;
 }
 
 // export const updateRegUserOTPServices = async (otp, id) => {

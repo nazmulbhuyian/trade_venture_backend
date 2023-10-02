@@ -22,6 +22,8 @@ const usersRegSchema = new Schema<UserRegInterface>({
         minLength: [2, "At least 2 caracted must be provide"],
         maxLength: [15, "Name is to large"],
     },
+},{
+    timestamps: true
 })
 
 const UserModel = model<UserRegInterface>("users", usersRegSchema);

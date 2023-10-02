@@ -1,9 +1,10 @@
 import { Request, Response, NextFunction } from "express";
 import bcrypt from "bcryptjs"
 // import { getRegUserServices, postRegUserServices, updateRegUserOTPServices, updateUserInfoService } from "./userRegServices";
-import { getRegUserServices, postRegUserServices } from "./userRegServices";
+import { getFindOneRegUserServices, postRegUserServices } from "./userRegServices";
 const saltRounds = 10
-// const { SendMail } = require("../midleware/authenticationEmail/maiGunSendOTP");
+import {sendRegOTP} from '../../midleware/sendRegOTP'
+import { UserRegInterface } from "./userRegInterface";
 
 export const postRegUser = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -11,23 +12,23 @@ export const postRegUser = async (req: Request, res: Response, next: NextFunctio
         if (!data?.email) {
             return res.send({ message: 'Please Provide A Email' })
         }
-        const inserted = await getRegUserServices(data?.email);
+        const inserted = await getFindOneRegUserServices(data?.email);
         if (inserted) {
             return res.send({ message: 'Previously Added' })
         }
         const otp = Math.floor(1000 + Math.random() * 9000);
         bcrypt.hash(data?.password, saltRounds, async function (err: Error | null, hash: string) {
-            const newUser = {
+            const newUser: UserRegInterface = {
                 email: data.email,
                 password: hash,
                 name: data.name,
                 otp: otp
             }
-            const result = await postRegUserServices(newUser);
+            const result : any = await postRegUserServices(newUser);
             if (!result) {
                 return res.send('User Not Added. Something Wrong');
             } else {
-                // await SendMail(result?.otp, result?.email)
+                await sendRegOTP(result?.otp, result?.email)
                 res.status(200).json({
                     status: 'Successfully',
                     data: result
