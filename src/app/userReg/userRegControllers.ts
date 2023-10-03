@@ -1,4 +1,5 @@
-import { Request, Response, NextFunction } from "express";
+import { Request, Response, NextFunction} from "express";
+// import {RequestHandler} from 'express-serve-static-core'
 import bcrypt from "bcryptjs"
 // import { getRegUserServices, postRegUserServices, updateRegUserOTPServices, updateUserInfoService } from "./userRegServices";
 import { getFindOneRegUserServices, postRegUserServices } from "./userRegServices";
@@ -6,7 +7,7 @@ const saltRounds = 10
 import {sendRegOTP} from '../../midleware/sendRegOTP'
 import { UserRegInterface } from "./userRegInterface";
 
-export const postRegUser = async (req: Request, res: Response, next: NextFunction) => {
+export const postRegUser = async (req: Request, res: Response, next: NextFunction): Promise<UserRegInterface | any> => {
     try {
         const data = req.body;
         if (!data?.email) {
@@ -45,7 +46,7 @@ export const postRegUser = async (req: Request, res: Response, next: NextFunctio
 }
 
 
-// export const postRegUserAccountVerify = async (req: Request, res: Response, next: NextFunction) => {
+// export const postRegUserAccountVerify: RequestHandler = async (req, res, next) => {
 //     try {
 //         const data = req.body;
 //         const user = await getRegUserServices(data?.email);
