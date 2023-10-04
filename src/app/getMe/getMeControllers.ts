@@ -3,9 +3,9 @@ import { promisify } from 'util'
 const dotenv = require("dotenv").config();
 import jwt, { Secret } from 'jsonwebtoken';
 import { getMeUsersService } from "./getMeServices";
-import { UserRegInterface } from "../userReg/userRegInterface";
+import { UserRegInterface, UserRegInterfaceMethod } from "../userReg/userRegInterface";
 
-export const getMeUser: RequestHandler = async (req, res, next) => {
+export const getMeUser: RequestHandler = async (req, res, next): Promise<UserRegInterface | UserRegInterfaceMethod | any> => {
     try {
         const token = await req.headers?.authorization?.split(" ")?.[1];
         if (!token) {
@@ -41,7 +41,7 @@ export const getMeUser: RequestHandler = async (req, res, next) => {
 }
 
 
-export const getUserInformation: RequestHandler = async (req, res, next) => {
+export const getUserInformation: RequestHandler = async (req, res, next): Promise<UserRegInterface | UserRegInterfaceMethod | any> => {
     try {
 
         const email = req.params.email;

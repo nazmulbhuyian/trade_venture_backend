@@ -1,3 +1,4 @@
+import { Model } from "mongoose";
 
 
 export interface UserRegInterface {
@@ -7,3 +8,5 @@ export interface UserRegInterface {
     role?: "user";
     otp?: number
 }
+
+export type UserRegInterfaceMethod = Model<UserRegInterface, object>

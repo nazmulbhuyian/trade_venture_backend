@@ -4,8 +4,9 @@ const saltRounds = 10
 const dotenv = require("dotenv").config();
 import jwt from 'jsonwebtoken'
 import { getLogUsersService } from "./userLoginServices";
+import { UserRegInterface, UserRegInterfaceMethod } from "../userReg/userRegInterface";
 
-export const postLogUser: RequestHandler = async (req, res, next) => {
+export const postLogUser: RequestHandler = async (req, res, next): Promise<UserRegInterface | UserRegInterfaceMethod | any> => {
     try {
         const { email, password } = req.body;
         if (!email || !password) {
