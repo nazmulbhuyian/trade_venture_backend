@@ -1,4 +1,4 @@
-const express = require("express");
+import express from "express";
 const router = express.Router();
 // import {postRegUser, updateUserInfo, postRegUserAccountVerify, postRegUserResendCode} from "./userRegControllers";
 import {postRegUser} from "./userRegControllers";

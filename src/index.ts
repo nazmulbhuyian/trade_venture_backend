@@ -9,8 +9,8 @@ const app : Application = express();
 
 
 import usersRegRoutes from './app/userReg/userRegRoutes';
-// const usersLogRoutes = require('./routes/userLogRoutes');
-// const getMeRoutes = require('./routes/getMeRoutes');
+import usersLogRoutes from './app/userLogin/userLoginRoutes'
+import getMeRoutes from './app/getMe/getMeRoutes'
 
 app.use(express.json());
 app.use(cors());
@@ -22,8 +22,8 @@ app.get("/", (req: Request, res: Response) => {
 
 
 app.use('/userReg', usersRegRoutes);
-// app.use('/userLog', usersLogRoutes);
-// app.use('/getMe', getMeRoutes);
+app.use('/userLog', usersLogRoutes);
+app.use('/getMe', getMeRoutes);
 
 
 
