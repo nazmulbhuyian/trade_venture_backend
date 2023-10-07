@@ -9,7 +9,7 @@ import { UserRegInterface } from "../userReg/userRegInterface";
 export const postLogUser: RequestHandler = async (req, res, next): Promise<UserRegInterface | any> => {
     try {
         const { email, password } = req.body;
-        if (!email) {
+        if (!email || !password) {
             return res.status(400).json({
                 status: 'Failled',
                 message: "Please Provide Email"
