@@ -7,7 +7,7 @@ export const getFindOneRegUserServices = async (email : string): Promise<UserReg
     return FindUser;
 }
 
-export const postRegUserServices = async (data: UserRegInterface): Promise<UserRegInterface | []> => {
+export const postRegUserServices = async (data: UserRegInterface): Promise<UserRegInterface | {}> => {
     const createUser = await UserModel.create(data);
     return createUser;
 }

@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import { UserRegInterface, UserRegInterfaceMethod } from "./userRegInterface";
+import { UserRegInterface } from "./userRegInterface";
 
 const usersRegSchema = new Schema<UserRegInterface>({
     email: {
@@ -20,12 +20,12 @@ const usersRegSchema = new Schema<UserRegInterface>({
     name: {
         type: String,
         minLength: [2, "At least 2 caracted must be provide"],
-        maxLength: [15, "Name is to large"],
+        maxLength: [30, "Name is to large"],
     },
 },{
     timestamps: true
 })
 
-const UserModel = model<UserRegInterface, UserRegInterfaceMethod>("users", usersRegSchema);
+const UserModel = model<UserRegInterface>("users", usersRegSchema);
 
 export default UserModel

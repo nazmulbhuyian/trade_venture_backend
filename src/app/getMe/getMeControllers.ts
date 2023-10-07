@@ -3,19 +3,18 @@ import { promisify } from 'util'
 const dotenv = require("dotenv").config();
 import jwt, { Secret } from 'jsonwebtoken';
 import { getMeUsersService } from "./getMeServices";
-import { UserRegInterface, UserRegInterfaceMethod } from "../userReg/userRegInterface";
+import { UserRegInterface } from "../userReg/userRegInterface";
 
-export const getMeUser: RequestHandler = async (req, res, next): Promise<UserRegInterface | UserRegInterfaceMethod | any> => {
+export const getMeUser: RequestHandler = async (req, res, next): Promise<UserRegInterface | any> => {
     try {
+        // const token = req.headers?.authorization;
         const token = await req.headers?.authorization?.split(" ")?.[1];
         if (!token) {
             return res.status(400).json({
                 status: 'Failled',
-                message: "Please Token"
+                message: "Invalid User"
             })
         }
-        // const token = req.headers?.authorization;
-        // const decode: any = await promisify(jwt.verify)(token, process.env.ACCESS_TOKEN as Secret);
         const decode: any = await promisify(jwt.verify as (token: string, secret: string | undefined) => any)(token, process.env.ACCESS_TOKEN);
 
             const user: UserRegInterface | null = await getMeUsersService(decode.email);
@@ -41,7 +40,7 @@ export const getMeUser: RequestHandler = async (req, res, next): Promise<UserReg
 }
 
 
-export const getUserInformation: RequestHandler = async (req, res, next): Promise<UserRegInterface | UserRegInterfaceMethod | any> => {
+export const getUserInformation: RequestHandler = async (req, res, next): Promise<UserRegInterface | any> => {
     try {
 
         const email = req.params.email;

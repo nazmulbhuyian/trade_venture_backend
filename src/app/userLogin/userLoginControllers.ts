@@ -4,26 +4,25 @@ const saltRounds = 10
 const dotenv = require("dotenv").config();
 import jwt from 'jsonwebtoken'
 import { getLogUsersService } from "./userLoginServices";
-import { UserRegInterface, UserRegInterfaceMethod } from "../userReg/userRegInterface";
+import { UserRegInterface } from "../userReg/userRegInterface";
 
-export const postLogUser: RequestHandler = async (req, res, next): Promise<UserRegInterface | UserRegInterfaceMethod | any> => {
+export const postLogUser: RequestHandler = async (req, res, next): Promise<UserRegInterface | any> => {
     try {
         const { email, password } = req.body;
-        if (!email || !password) {
+        if (!email) {
             return res.status(400).json({
                 status: 'Failled',
-                message: "Please Provide Email and Password"
+                message: "Please Provide Email"
             })
         }
 
-        const user = await getLogUsersService(email)
+        const user: any = await getLogUsersService(email)
         if (!user) {
             return res.status(400).json({
                 status: 'Failled',
                 message: "user get Failed"
             })
         }
-
         const isPasswordValid = await bcrypt.compare(password, user?.password);
 
         if (!isPasswordValid) {
@@ -34,7 +33,11 @@ export const postLogUser: RequestHandler = async (req, res, next): Promise<UserR
         }
 
         const token = jwt.sign({ email }, process.env.ACCESS_TOKEN as string);
-        return res.send({ tradeVentureLogInToken: token })
+        return res.send({ 
+            tradeVentureLogInToken: token,
+            message: "Successfully Login",
+            status: "Successfull"
+         })
 
     } catch (error: Error | any) {
         res.status(400).json({

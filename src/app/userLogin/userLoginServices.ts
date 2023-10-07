@@ -3,7 +3,7 @@ import { UserRegInterface } from "../userReg/userRegInterface";
 
 
 
-export const getLogUsersService = async (email: string): Promise<UserRegInterface | any> => {
+export const getLogUsersService = async (email: string): Promise<UserRegInterface | null> => {
     const user = await UserModel.findOne({ email: email });
     return user;
 }
