@@ -12,6 +12,8 @@ export const postRegUserServices = async (data: UserRegInterface): Promise<UserR
     return createUser;
 }
 
+
+
 // export const updateRegUserOTPServices = async (otp, id) => {
 //     // const findUserAndUpdateOTP = await Users.findOneAndUpdate({_id: id}, {otp: otp}, {
 //     //     runValidators: true

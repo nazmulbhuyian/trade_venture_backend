@@ -1,14 +1,15 @@
-import { Request, Response, NextFunction} from "express";
+import { Request, Response, NextFunction } from "express";
 // import {RequestHandler} from 'express-serve-static-core'
 import bcrypt from "bcryptjs"
-// import { getRegUserServices, postRegUserServices, updateRegUserOTPServices, updateUserInfoService } from "./userRegServices";
 import { getFindOneRegUserServices, postRegUserServices } from "./userRegServices";
 const saltRounds = 10
-import {sendRegOTP} from '../../midleware/sendRegOTP'
+import { sendRegOTP } from '../../midleware/sendRegOTP'
 import { UserRegInterface } from "./userRegInterface";
+
 
 export const postRegUser = async (req: Request, res: Response, next: NextFunction): Promise<UserRegInterface | any> => {
     try {
+
         const data = req.body;
         if (!data?.email) {
             return res.send({ message: 'Please Provide A Email' })
@@ -37,6 +38,8 @@ export const postRegUser = async (req: Request, res: Response, next: NextFunctio
             }
 
         });
+
+
     } catch (error) {
         res.status(400).json({
             status: 'Failled',
