@@ -1,5 +1,5 @@
 import { RequestHandler } from "express";
-import { promisify } from 'util'
+import { promisify } from 'util';
 const dotenv = require("dotenv").config();
 import jwt, { Secret } from 'jsonwebtoken';
 import { getMeUsersService } from "./getMeServices";
