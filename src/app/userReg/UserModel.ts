@@ -1,18 +1,26 @@
 import { Schema, model } from "mongoose";
 import { UserRegInterface } from "./userRegInterface";
 
+// User Schema
 const usersRegSchema = new Schema<UserRegInterface>({
     email: {
         required: true,
         type: String,
-        unique: true
+        unique: true,
+        validate: {
+            validator: (value: string) => {
+                const emailRegex = /^[^\s@]+@gmail\.com$/
+                return emailRegex.test(value);
+            },
+            message: (props: any) => `${props.value} is not a valid email address!`,
+        },
     },
     password: {
         type: String
     },
     role: {
         type: String,
-        default: "user",
+        default: "Startup",
     },
     otp: {
         type: String
@@ -28,4 +36,4 @@ const usersRegSchema = new Schema<UserRegInterface>({
 
 const UserModel = model<UserRegInterface>("users", usersRegSchema);
 
-export default UserModel
+export default UserModel;

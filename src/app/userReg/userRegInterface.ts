@@ -1,9 +1,10 @@
 
+// User Interface
 
 export interface UserRegInterface {
     name?: string;
     password?: string;
     email: string;
-    role?: "user";
+    role?: "Startup";
     otp?: number
 }

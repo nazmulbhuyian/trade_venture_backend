@@ -7,4 +7,4 @@ router.route('/').post(postLogUser)
 // router.route('/newPassword').post(usersLogControllers.postNewtPasswordUser)
 
 
-export default router;
+export const UserLogRoutes = router;

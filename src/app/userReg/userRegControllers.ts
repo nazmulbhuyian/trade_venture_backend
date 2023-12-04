@@ -1,22 +1,30 @@
 import { Request, Response, NextFunction } from "express";
-// import {RequestHandler} from 'express-serve-static-core'
+import {RequestHandler} from 'express-serve-static-core'
 import bcrypt from "bcryptjs"
 import { getFindOneRegUserServices, postRegUserServices } from "./userRegServices";
 const saltRounds = 10
-import { sendRegOTP } from '../../midleware/sendRegOTP'
 import { UserRegInterface } from "./userRegInterface";
+import sendResponse from "../../shared/sendResponse";
+import httpStatus from 'http-status';
 
-
-export const postRegUser = async (req: Request, res: Response, next: NextFunction): Promise<UserRegInterface | any> => {
+// Registration A User
+export const postRegUser: RequestHandler = async (req: Request, res: Response, next: NextFunction): Promise<UserRegInterface | any> => {
     try {
-
         const data = req.body;
         if (!data?.email) {
-            return res.send({ message: 'Please Provide A Email' })
+            return sendResponse<UserRegInterface>(res, {
+                statusCode: 400,
+                success: false,
+                message: 'Please Provide A Email !'
+            });
         }
         const inserted = await getFindOneRegUserServices(data?.email);
         if (inserted) {
-            return res.send({ message: 'Previously Added' })
+            return sendResponse<UserRegInterface>(res, {
+                statusCode: 400,
+                success: false,
+                message: 'Previously Added !'
+            });
         }
         const otp = Math.floor(1000 + Math.random() * 9000);
         bcrypt.hash(data?.password, saltRounds, async function (err: Error | null, hash: string) {
@@ -26,114 +34,21 @@ export const postRegUser = async (req: Request, res: Response, next: NextFunctio
                 name: data.name,
                 otp: otp
             }
-            const result : any = await postRegUserServices(newUser);
-            if (!result) {
-                return res.send('User Not Added. Something Wrong');
-            } else {
-                await sendRegOTP(result?.otp, result?.email)
-                res.status(200).json({
-                    status: 'Successfully',
-                    data: result
-                })
+            try {
+                const result: any = await postRegUserServices(newUser);
+                sendResponse<UserRegInterface>(res, {
+                    statusCode: httpStatus.OK,
+                    success: true,
+                    message: 'User Added successfully !',
+                    data: result,
+                });
+            } catch (error) {
+                next(error);
             }
-
         });
 
 
-    } catch (error) {
-        res.status(400).json({
-            status: 'Failled',
-            message: "User Registration Failed"
-        })
+    } catch (error: any) {
+        next(error);
     }
 }
-
-
-// export const postRegUserAccountVerify: RequestHandler = async (req, res, next) => {
-//     try {
-//         const data = req.body;
-//         const user = await getRegUserServices(data?.email);
-//         if (!user) {
-//             return res.send({ message: 'Something Wrong' });
-//         }
-//         const otp = user?.otp;
-//         if (data?.otp == otp) {
-//             res.status(200).json({
-//                 status: 'Successfully'
-//             })
-//         } else {
-//             res.status(400).json({
-//                 status: 'Failled',
-//                 message: "OTP not match"
-//             })
-//         }
-//     } catch (error) {
-//         res.status(400).json({
-//             status: 'Failled',
-//             message: "OTP not match",
-//             error: error.message
-//         })
-//     }
-// }
-
-// export const postRegUserResendCode = async (req: Request, res: Response, next: NextFunction) => {
-//     try {
-//         const { email } = req.body;
-//         const user = await getRegUserServices(email);
-
-//         if (!user) {
-//             return res.send({ message: 'Something Wrong' });
-//         }
-//         const otp = Math.floor(1000 + Math.random() * 9000);
-//         const updateOTP = await updateRegUserOTPServices(otp, user?._id);
-//         if (updateOTP?.modifiedCount > 0) {
-//             const newOtp = await getRegUserServices(email);
-//             await SendMail(newOtp?.otp, email);
-//             res.send({
-//                 message: "New OTP Send",
-//                 otp: newOtp?.otp,
-//                 data: updateOTP
-//             })
-//         } else {
-//             res.status(400).json({
-//                 status: 'Failled',
-//                 message: "Something Wrong"
-//             })
-//         }
-//     } catch (error) {
-//         res.status(400).json({
-//             status: 'Failled',
-//             message: "Something Wrong",
-//             error: error.message
-//         })
-//     }
-// }
-
-// export const updateUserInfo = async (req: Request, res: Response, next: NextFunction) => {
-//     try {
-//         const data = req.body;
-//         const result = await updateUserInfoService(data);
-//         if (!result) {
-//             return res.send('Nothing Update');
-//         }
-//         if (result?.modifiedCount > 0) {
-//             res.status(200).json({
-//                 status: 'Successfully Updated',
-//                 data: result
-//             })
-//         } else {
-//             res.status(400).json({
-//                 status: 'Failled',
-//                 message: "Something Wrong"
-//             })
-//         }
-
-//     } catch (error) {
-//         res.status(400).json({
-//             status: 'Failled',
-//             message: "Nothing Update",
-//             error: error.message
-//         })
-//     }
-// }
-
