@@ -1,9 +1,9 @@
 import UserModel from "../userReg/UserModel";
-import { UserRegInterface } from "../userReg/userRegInterface";
+import { IUserRegInterface } from "../userReg/userRegInterface";
 
 
 
-export const getLogUsersService = async (email: string): Promise<UserRegInterface | null> => {
+export const getLogUsersService = async (email: string): Promise<IUserRegInterface | null> => {
     const user = await UserModel.findOne({ email: email });
     return user;
 }

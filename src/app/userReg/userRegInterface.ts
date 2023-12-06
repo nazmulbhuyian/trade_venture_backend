@@ -1,10 +1,11 @@
 
 // User Interface
 
-export interface UserRegInterface {
-    name?: string;
-    password?: string;
+export interface IUserRegInterface {
+    name: string;
+    password: string;
     email: string;
-    role?: "Startup";
-    otp?: number
+    role: string;
+    otp: number,
+    status: 'Active' | 'In Active';
 }

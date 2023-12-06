@@ -1,8 +1,8 @@
 import { Schema, model } from "mongoose";
-import { UserRegInterface } from "./userRegInterface";
+import { IUserRegInterface } from "./userRegInterface";
 
 // User Schema
-const usersRegSchema = new Schema<UserRegInterface>({
+const usersRegSchema = new Schema<IUserRegInterface>({
     email: {
         required: true,
         type: String,
@@ -16,16 +16,26 @@ const usersRegSchema = new Schema<UserRegInterface>({
         },
     },
     password: {
+        required: true,
         type: String
     },
     role: {
+        required: true,
         type: String,
         default: "Startup",
     },
     otp: {
-        type: String
+        required: true,
+        type: Number
+    },
+    status: {
+        required: true,
+        type: String,
+        enum: ['Active', 'In Active'],
+        default: "Active",
     },
     name: {
+        required: true,
         type: String,
         minLength: [2, "At least 2 caracted must be provide"],
         maxLength: [30, "Name is to large"],
@@ -34,6 +44,6 @@ const usersRegSchema = new Schema<UserRegInterface>({
     timestamps: true
 })
 
-const UserModel = model<UserRegInterface>("users", usersRegSchema);
+const UserModel = model<IUserRegInterface>("users", usersRegSchema);
 
 export default UserModel;
