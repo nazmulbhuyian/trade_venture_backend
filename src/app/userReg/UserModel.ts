@@ -9,7 +9,7 @@ const usersRegSchema = new Schema<IUserRegInterface>({
         unique: true,
         validate: {
             validator: (value: string) => {
-                const emailRegex = /^[^\s@]+@gmail\.com$/
+                const emailRegex = /@/
                 return emailRegex.test(value);
             },
             message: (props: any) => `${props.value} is not a valid email address!`,
