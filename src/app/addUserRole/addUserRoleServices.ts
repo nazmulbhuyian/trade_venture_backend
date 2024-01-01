@@ -15,7 +15,7 @@ export const postUserRoleServices = async (data: IUserRoleAddInterface): Promise
 
 // Find Roles
 export const findUserAllRoleServices = async (): Promise<IUserRoleAddInterface[]> => {
-    const findUserRole = await UserRoleModel.find({}).select("-__v -createdAt -updatedAt");
+    const findUserRole = await UserRoleModel.find({}).sort({ "_id": -1 }).select("-__v -createdAt -updatedAt");
     return findUserRole;
 }
 
